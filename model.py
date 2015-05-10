@@ -1,6 +1,7 @@
 """Models and database functions for Ratings project."""
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import or_
 
 # This is the connection to the SQLite database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
@@ -16,20 +17,31 @@ class Model(db.Model):
 
     __tablename__ = "models"
     
-    model_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    model_year = db.Column(db.DateTime)
-    brand_name  = db.Column(db.String(50), nullable=False, unique=True)
-    model_name = db.Column(db.String(50), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    year = db.Column(db.Integer, nullable=True)
+    brand_name  = db.Column(db.String(64), nullable=True)
+    name = db.Column(db.String(64), nullable=True)
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Model id=%s name=%s>" % (self.id, self.name)    
 
 class Brand(db.Model):
 
     __tablename__ = "brands"
     
-    brand_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    brand_name = db.Column(db.String(50), nullable=False, unique=True)
-    founded_year = db.Column(db.DateTime)
-    headquarters = db.Column(db.String(50), nullable=False)
-    discont_at = db.Column(db.DateTime)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(64), nullable=True)
+    founded = db.Column(db.Integer, nullable=True)
+    discontinued = db.Column(db.Integer, nullable=True)
+    headquarters = db.Column(db.String(64), nullable=True)
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Brand id=%s name=%s>" % (self.id, self.name)    
+
 
 # End Part 1
 ##############################################################################
